@@ -5,6 +5,8 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import pages.LoginPage;
 import utils.ConfigReader;
+import org.testng.ITestResult;
+import utils.ScreenshotUtil;
 
 public class BaseTest {
 
@@ -22,7 +24,10 @@ public class BaseTest {
     }
 
     @AfterMethod
-    public void tearDown() {
-        DriverFactory.quitDriver();
+public void tearDown(ITestResult result) {
+    if (ITestResult.FAILURE == result.getStatus()) {
+        ScreenshotUtil.captureScreenshot(driver, result.getName());
     }
+    DriverFactory.quitDriver();
+}
 }
